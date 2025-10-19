@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+  <maintainer type="person"><email>gentoo@trustcrypt.com</email><name>keklick1337</name></maintainer>
+  <use>
+    <flag name="rar">Enable support for non-free rar decoder</flag>
+    <flag name="uasm">Use <pkg>dev-lang/uasm</pkg> to include optimized code</flag>
+    <flag name="jwasm">Use <pkg>dev-lang/jwasm</pkg> to include optimized code (doesn't support AES)</flag>
+    <flag name="symlink">Install additional symlink to 7z, 7za and 7zr</flag>
+  </use>
+  <upstream>
+    <remote-id type="github">keklick1337/7zip-extended</remote-id>
+  </upstream>
+</pkgmetadata>
