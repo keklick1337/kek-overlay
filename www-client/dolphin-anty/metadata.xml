@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@trustcrypt.com</email>
+		<name>Vladislav Tislenko</name>
+	</maintainer>
+	<longdescription lang="en">
+		Dolphin Anty is a multi-account antidetect browser designed for managing
+		multiple browser profiles with different fingerprints. Built on Electron,
+		it provides tools for online marketing, traffic arbitrage, and other tasks
+		requiring multiple isolated browser sessions.
+	</longdescription>
+	<upstream>
+		<remote-id type="github">dolphin-anty/anty-app</remote-id>
+		<bugs-to>https://dolphin-anty.com/support</bugs-to>
+	</upstream>
+</pkgmetadata>
