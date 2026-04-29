@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@trustcrypt.com</email>
+		<name>Vladislav Tislenko</name>
+	</maintainer>
+	<longdescription lang="en">
+		Donut Browser is an open source anti-detect browser. It supports unlimited
+		isolated browser profiles with separate fingerprints, cookies, extensions
+		and data, using Chromium (Wayfern) and Firefox (Camoufox) engines with
+		advanced fingerprint spoofing. Includes per-profile proxy and WireGuard VPN
+		support, a local REST API and Model Context Protocol server, profile groups,
+		import from Chrome/Firefox/Edge/Brave, cookie and extension management,
+		optional end-to-end encrypted cloud sync, and zero telemetry.
+
+		Note: this is a prebuilt -bin package built on webkit2gtk-4.1. On Wayland
+		the DMA-BUF renderer in webkit2gtk may crash with
+		"Gdk-Message: Error 71 (Protocol error) dispatching to Wayland display".
+		The bundled .desktop entry launches the browser with
+		WEBKIT_DISABLE_DMABUF_RENDERER=1 to avoid this. When starting from a
+		terminal under Wayland, set WEBKIT_DISABLE_DMABUF_RENDERER=1 manually.
+		GDK_BACKEND=x11 (XWayland) also works, but may render the application
+		window as a black screen on some setups - prefer the
+		WEBKIT_DISABLE_DMABUF_RENDERER=1 workaround.
+	</longdescription>
+	<upstream>
+		<remote-id type="github">zhom/donutbrowser</remote-id>
+		<bugs-to>https://github.com/zhom/donutbrowser/issues</bugs-to>
+	</upstream>
+</pkgmetadata>
