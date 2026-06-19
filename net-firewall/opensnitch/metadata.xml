@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@trustcrypt.com</email>
+		<name>Vladislav Tislenko</name>
+	</maintainer>
+	<use>
+		<flag name="audit">Enable kernel audit-based process monitoring (requires AUDIT kernel support)</flag>
+		<flag name="bpf">Enable eBPF-based process monitoring (requires BPF kernel support)</flag>
+		<flag name="iptables">Enable iptables firewall backend</flag>
+		<flag name="nftables">Enable nftables firewall backend</flag>
+	</use>
+	<longdescription lang="en">
+		OpenSnitch is a GNU/Linux interactive application firewall inspired by
+		Little Snitch. It intercepts outbound connections and prompts the user
+		to allow or deny them. Rules can be based on process, port, user,
+		destination IP/host, or a combination of these. The daemon (opensnitchd)
+		is written in Go and uses netfilter queues. The UI (opensnitch-ui) is a
+		Python/PyQt6 application that provides a graphical interface for
+		managing connections and rules.
+	</longdescription>
+	<upstream>
+		<remote-id type="github">evilsocket/opensnitch</remote-id>
+		<bugs-to>https://github.com/evilsocket/opensnitch/issues</bugs-to>
+	</upstream>
+</pkgmetadata>

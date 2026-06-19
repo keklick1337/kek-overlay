@@ -1,0 +1,23 @@
+#!/sbin/openrc-run
+# Copyright 2025 Gentoo Authors
+# Distributed under the terms of the GNU General Public License v2
+
+description="OpenSnitch interactive application firewall"
+
+command="/usr/bin/opensnitchd"
+command_args="${OPENSNITCHD_OPTS:--rules-path /etc/opensnitchd/rules}"
+command_background=true
+pidfile="/run/opensnitchd.pid"
+output_log="/var/log/opensnitchd.log"
+error_log="/var/log/opensnitchd.log"
+
+depend() {
+	need net
+	after iptables ip6tables nftables
+	use logger
+}
+
+start_pre() {
+	checkpath --directory --mode 0755 --owner root:root /etc/opensnitchd/rules
+	checkpath --file --mode 0600 --owner root:root /var/log/opensnitchd.log
+}
