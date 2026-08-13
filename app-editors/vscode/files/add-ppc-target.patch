@@ -1,0 +1,36 @@
+--- a/build/gulpfile.vscode.ts	2022-02-19 11:45:42.751433707 +0100
++++ b/build/gulpfile.vscode.ts	2022-02-19 11:46:24.338088284 +0100
+@@ -354,6 +354,7 @@
+ 	{ platform: 'linux', arch: 'x64' },
+ 	{ platform: 'linux', arch: 'armhf' },
+ 	{ platform: 'linux', arch: 'arm64' },
++	{ platform: 'linux', arch: 'ppc64' },
+ ];
+ BUILD_TARGETS.forEach(buildTarget => {
+ 	const dashed = (str) => (str ? `-${str}` : ``);
+--- a/build/gulpfile.vscode.linux.ts	2022-02-19 11:45:53.324763965 +0100
++++ b/build/gulpfile.vscode.linux.ts	2022-02-19 11:48:09.361391093 +0100
+@@ -30,6 +30,7 @@
+ 		case 'x64': return 'amd64';
+ 		case 'armhf': return 'armhf';
+ 		case 'arm64': return 'arm64';
++		case 'ppc64': return 'ppc64el';
+ 		default: throw new Error(`Unknown arch: ${arch}`);
+ 	}
+ }
+@@ -140,6 +141,7 @@
+ 		case 'x64': return 'x86_64';
+ 		case 'armhf': return 'armv7hl';
+ 		case 'arm64': return 'aarch64';
++		case 'ppc64': return 'ppc64el';
+ 		default: throw new Error(`Unknown arch: ${arch}`);
+ 	}
+ }
+@@ -284,6 +286,7 @@
+ 	{ arch: 'x64' },
+ 	{ arch: 'armhf' },
+ 	{ arch: 'arm64' },
++	{ arch: 'ppc64' },
+ ];
+ 
+ BUILD_TARGETS.forEach(({ arch }) => {
