@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@trustcrypt.com</email>
+		<name>Vladislav Tislenko</name>
+	</maintainer>
+	<use>
+		<flag name="gui">Build the desktop application (Fyne, OpenGL, X11/Wayland); without it only multi2fa-cli is installed</flag>
+	</use>
+	<longdescription lang="en">
+		Multi2FA TOTP is an offline TOTP/HOTP authenticator. Accounts are kept in
+		password protected vaults encrypted with Argon2id, scrypt or PBKDF2 and
+		XChaCha20-Poly1305, AES-256-GCM or both in cascade, with an optional key
+		file. The desktop app supports several vaults, nested folders, QR scanning
+		from a camera, the screen, images and the clipboard, Google Authenticator
+		exports, auto-lock and encrypted backups. multi2fa-cli lists accounts and
+		prints codes from the same vaults in a terminal.
+	</longdescription>
+	<upstream>
+		<remote-id type="github">keklick1337/Multi2FA-TOTP</remote-id>
+		<bugs-to>https://github.com/keklick1337/Multi2FA-TOTP/issues</bugs-to>
+	</upstream>
+</pkgmetadata>
