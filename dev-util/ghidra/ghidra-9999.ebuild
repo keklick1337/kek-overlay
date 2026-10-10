@@ -5,9 +5,14 @@ EAPI=8
 PYTHON_COMPAT=( python3_{12..14} )
 inherit java-pkg-2 desktop git-r3 python-single-r1
 
-GRADLE_DEP_VER="20260606"
+GRADLE_DEP_VER="20260923"
 GRADLE_VER="8.5"
 RELEASE_VERSION="12.1"
+YAJSW_VER="13.18"
+POSTGRESQL_VER="15.18"
+Z3_VER="4.13.0"
+Z3_X64_GLIBC_VER="2.31"
+Z3_NAME="z3-${Z3_VER}-x64-glibc-${Z3_X64_GLIBC_VER}"
 
 DESCRIPTION="Ghidra is a software reverse engineering (SRE) framework created and
 		maintained by the National Security Agency Research Directorate. This
@@ -28,24 +33,50 @@ SRC_URI="https://dev.pentoo.ch/~blshkv/distfiles/${PN}-dependencies-${GRADLE_DEP
 	https://github.com/pxb1988/dex2jar/releases/download/v2.4/dex-tools-v2.4.zip
 	https://github.com/digitalsleuth/AXMLPrinter2/raw/691036a3caf84950fbb0df6f1fa98d7eaa92f2a0/AXMLPrinter2.jar
 	https://github.com/unsound/hfsexplorer/releases/download/hfsexplorer-0.21/hfsexplorer-0_21-bin.zip
-	https://downloads.sourceforge.net/yajsw/yajsw/yajsw-stable-13.12.zip
-	https://ftp.postgresql.org/pub/source/v15.10/postgresql-15.10.tar.gz
+	https://downloads.sourceforge.net/yajsw/yajsw/yajsw-stable-${YAJSW_VER}.zip
+	https://ftp.postgresql.org/pub/source/v${POSTGRESQL_VER}/postgresql-${POSTGRESQL_VER}.tar.gz
 	https://archive.eclipse.org/tools/cdt/releases/8.6/cdt-8.6.0.zip
 	https://sourceforge.net/projects/pydev/files/pydev/PyDev%209.3.0/PyDev%209.3.0.zip -> PyDev-9.3.0.zip
 	https://github.com/NationalSecurityAgency/ghidra-data/raw/Ghidra_${RELEASE_VERSION}/lib/java-sarif-2.1-modified.jar
+	https://github.com/NationalSecurityAgency/ghidra-data/raw/Ghidra_${RELEASE_VERSION}/Debugger/dbgmodel.tlb
+	https://github.com/Z3Prover/z3/releases/download/z3-${Z3_VER}/${Z3_NAME}.zip
 "
 for FIDB in ${FIDB_FILES}; do
 	SRC_URI+=" https://github.com/NationalSecurityAgency/ghidra-data/raw/Ghidra_${RELEASE_VERSION}/FunctionID/${FIDB}"
 done
 
-SRC_URI+=" https://files.pythonhosted.org/packages/8d/14/619e24a4c70df2901e1f4dbc50a6291eb63a759172558df326347dce1f0d/protobuf-3.20.3-py2.py3-none-any.whl
+# Python wheels/sdists, pinned to the versions fetchDependencies.gradle expects.
+# Windows- and macOS-only wheels are omitted: this package is Linux only.
+SRC_URI+=" https://files.pythonhosted.org/packages/ee/01/1ed1d482960a5718fd99c82f6d79120181947cfd4667ec3944d448ed44a3/protobuf-6.31.0-py3-none-any.whl
 	https://files.pythonhosted.org/packages/90/c7/6dc0a455d111f68ee43f27793971cf03fe29b6ef972042549db29eec39a2/psutil-5.9.8.tar.gz
-	https://files.pythonhosted.org/packages/c7/42/be1c7bbdd83e1bfb160c94b9cafd8e25efc7400346cf7ccdbdb452c467fa/setuptools-68.0.0-py3-none-any.whl
-	https://files.pythonhosted.org/packages/27/d6/003e593296a85fd6ed616ed962795b2f87709c3eee2bca4f6d0fe55c6d00/wheel-0.37.1-py2.py3-none-any.whl
-	https://files.pythonhosted.org/packages/ce/78/91db67e7fe1546dc8b02c38591b7732980373d2d252372f7358054031dd4/Pybag-2.2.12-py3-none-any.whl
-	https://files.pythonhosted.org/packages/d0/dd/b28df50316ca193dd1275a4c47115a720796d9e1501c1888c4bfa5dc2260/capstone-5.0.1-py3-none-win_amd64.whl
-	https://files.pythonhosted.org/packages/50/8f/518a37381e55a8857a638afa86143efa5508434613541402d20611a1b322/comtypes-1.4.1-py3-none-any.whl
-	https://files.pythonhosted.org/packages/83/1c/25b79fc3ec99b19b0a0730cc47356f7e2959863bf9f3cd314332bddb4f68/pywin32-306-cp312-cp312-win_amd64.whl"
+	https://files.pythonhosted.org/packages/a3/dc/17031897dae0efacfea57dfd3a82fdd2a2aeb58e0ff71b77b87e44edc772/setuptools-80.9.0-py3-none-any.whl
+	https://files.pythonhosted.org/packages/0b/2c/87f3254fd8ffd29e4c02732eee68a83a1d3c346ae39bc6822dcbcb697f2b/wheel-0.45.1-py3-none-any.whl
+	https://files.pythonhosted.org/packages/5e/a2/52084698c0a3c7e7a94ddfff26f83df09a50781b8436f6f203f5de0a457c/pybag-2.2.16-py3-none-any.whl
+	https://files.pythonhosted.org/packages/66/95/f30c80615fda0d3c0ee6493ac9db61183313b43499b62dec136773b0e870/comtypes-1.4.13-py3-none-any.whl
+	https://files.pythonhosted.org/packages/92/3a/658eb3ba88f067662be280f8f1aec07a70c96bac77e9edc48b1be38e446b/win32more-0.7.0-py3-none-any.whl
+	https://files.pythonhosted.org/packages/f6/49/cff21fc3adcac1fe19f9f2e50278553fe13b9ac702be569c97f85292481d/win32more_appsdk-0.7.3-py2.py3-none-any.whl
+	https://files.pythonhosted.org/packages/81/bc/7c1c5609f835d3e719c944714638a7a70bbfef6b990c251c32c1cd82d67a/win32more_core-0.7.0-py2.py3-none-any.whl
+	https://files.pythonhosted.org/packages/b5/6d/d58b223be7cff571527d91a3626089cb4da614dcba461811dcf18449f0f9/win32more_microsoft_graphics_win2d-0.7.1.3.2-py2.py3-none-any.whl
+	https://files.pythonhosted.org/packages/6c/8e/fdfc9f796aad6b622ff197b3e58c9689db95482dbf7817cd99d351b54719/win32more_microsoft_web_webview2-0.7.1.0.3650.58-py2.py3-none-any.whl
+	https://files.pythonhosted.org/packages/56/d7/0bb36964811a23f262cdddb1e5b91fdbd2f494990d48e657f15108f04855/win32more_microsoft_windows_sdk_contracts-0.7.10.0.26100.6901-py2.py3-none-any.whl
+	https://files.pythonhosted.org/packages/e5/37/8706eb126fc52e59526304aa89ee30771a894e489aa0ea835f101e499b17/win32more_microsoft_windows_sdk_win32metadata-0.7.68.0.4-py2.py3-none-any.whl
+	https://files.pythonhosted.org/packages/ef/7c/9630708dd252e0c5c7c9975d52ba0deea996e9b0cf29784d521ac30f3a48/win32more_microsoft_windowsappsdk-0.7.1.8.251106002-py2.py3-none-any.whl
+	https://files.pythonhosted.org/packages/20/12/38679034af332785aac8774540895e234f4d07f7545804097de4b666afd8/packaging-25.0-py3-none-any.whl
+	https://files.pythonhosted.org/packages/6d/d0/191db2e9ab6ae7029368a488c9d88235966843b185aba7925e54aa0c0013/jpype1-1.5.2-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+	https://files.pythonhosted.org/packages/74/f3/1cd4332076ed0421e703412f47f15f43af170809435c57ba3162edc80d4b/jpype1-1.5.2-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+	https://files.pythonhosted.org/packages/0b/7d/9fdbbc1a574be43f9820735ca8df0caf8b159856201d9b21fd73932342bc/jpype1-1.5.2-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+	https://files.pythonhosted.org/packages/97/0a/cbe03759331c640aa5862f974028122a862b08935a0b11b8fa6f6e46c26b/jpype1-1.5.2-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+	https://files.pythonhosted.org/packages/77/91/f08a719461a390b48d9096b50f1f4a49ee281007ec192e51073090d3d8b7/jpype1-1.5.2-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+	https://files.pythonhosted.org/packages/bd/68/47fa634cbd0418cbca86355e9421425f5892ee994f7338106327e49f9117/jpype1-1.5.2.tar.gz"
+
+# Maven artifacts 12.1.4 resolves (commons-collections4 4.6.0 and its parents, junit-bom)
+# that are not in the dependencies tarball
+SRC_URI+=" https://repo1.maven.org/maven2/org/apache/commons/commons-collections4/4.6.0/commons-collections4-4.6.0.jar
+	https://repo1.maven.org/maven2/org/apache/commons/commons-collections4/4.6.0/commons-collections4-4.6.0.pom
+	https://repo1.maven.org/maven2/org/apache/commons/commons-parent/103/commons-parent-103.pom
+	https://repo1.maven.org/maven2/org/apache/apache/39/apache-39.pom
+	https://repo1.maven.org/maven2/org/junit/junit-bom/5.14.3/junit-bom-5.14.3.pom
+	https://repo1.maven.org/maven2/org/junit/junit-bom/5.14.3/junit-bom-5.14.3.module"
 
 LICENSE="Apache-2.0"
 SLOT="0"
@@ -107,14 +138,18 @@ src_unpack() {
 	unpack hfsexplorer-0_21-bin.zip
 	cp lib/*.jar ./flatRepo || die "cp hfsexplorer failed"
 
+	# com.microsoft.z3 Java binding for the SymbolicSummaryZ3 extension
+	unpack "${Z3_NAME}.zip"
+	cp "${Z3_NAME}/bin/com.microsoft.z3.jar" ./flatRepo || die "cp z3 jar failed"
+
 	mkdir -p "${WORKDIR}/ghidra.bin/Ghidra/Features/GhidraServer/" || die "mkdir server failed"
-	cp "${DISTDIR}/yajsw-stable-13.12.zip" "${WORKDIR}/ghidra.bin/Ghidra/Features/GhidraServer/" || die "cp yajsw failed"
+	cp "${DISTDIR}/yajsw-stable-${YAJSW_VER}.zip" "${WORKDIR}/ghidra.bin/Ghidra/Features/GhidraServer/" || die "cp yajsw failed"
 
 	local plugin_dep_path="ghidra.bin/GhidraBuild/EclipsePlugins/GhidraDev/buildDependencies"
 	mkdir -p "${WORKDIR}/${plugin_dep_path}/" || die "mkdir plugin deps failed"
 	cp "${DISTDIR}/PyDev-9.3.0.zip" "${WORKDIR}/${plugin_dep_path}/PyDev 9.3.0.zip" || die "cp PyDev failed"
 	cp "${DISTDIR}/cdt-8.6.0.zip" "${WORKDIR}/${plugin_dep_path}/" || die "cp cdt failed"
-	cp "${DISTDIR}/postgresql-15.10.tar.gz" "${WORKDIR}/${plugin_dep_path}/" || die "cp postgresql failed"
+	cp "${DISTDIR}/postgresql-${POSTGRESQL_VER}.tar.gz" "${WORKDIR}/${plugin_dep_path}/" || die "cp postgresql failed"
 
 	cd "${S}" || die
 	mv ../dependencies . || die "mv dependencies failed"
@@ -125,17 +160,34 @@ src_unpack() {
 		cp "${DISTDIR}/${fidb}" ./dependencies/fidb/ || die "cp ${fidb} failed"
 	done
 
-	mkdir -p ./dependencies/{Debugger-rmi-trace,Debugger-agent-dbgeng} || die "mkdir Debugger dirs failed"
+	mkdir -p ./dependencies/{Debugger-rmi-trace,Debugger-agent-dbgeng,PyGhidra,BSim,SymbolicSummaryZ3/os/linux_x86_64} || die "mkdir dependency dirs failed"
 
-	cp "${DISTDIR}/protobuf-3.20.3-py2.py3-none-any.whl" ./dependencies/Debugger-rmi-trace/ || die
-	cp "${DISTDIR}/psutil-5.9.8.tar.gz" ./dependencies/Debugger-rmi-trace/ || die
-	cp "${DISTDIR}/setuptools-68.0.0-py3-none-any.whl" ./dependencies/Debugger-rmi-trace/ || die
-	cp "${DISTDIR}/wheel-0.37.1-py2.py3-none-any.whl" ./dependencies/Debugger-rmi-trace/ || die
+	# Prebuilt Windows type library (midl output, buildable only on Windows); the
+	# Debugger-agent-dbgeng project asserts it exists at configure time.
+	cp "${DISTDIR}/dbgmodel.tlb" ./dependencies/Debugger-agent-dbgeng/ || die "cp dbgmodel.tlb failed"
 
-	cp "${DISTDIR}/Pybag-2.2.12-py3-none-any.whl" ./dependencies/Debugger-agent-dbgeng/ || die
-	cp "${DISTDIR}/capstone-5.0.1-py3-none-win_amd64.whl" ./dependencies/Debugger-agent-dbgeng/ || die
-	cp "${DISTDIR}/comtypes-1.4.1-py3-none-any.whl" ./dependencies/Debugger-agent-dbgeng/ || die
-	cp "${DISTDIR}/pywin32-306-cp312-cp312-win_amd64.whl" ./dependencies/Debugger-agent-dbgeng/ || die
+	cp "${DISTDIR}/postgresql-${POSTGRESQL_VER}.tar.gz" ./dependencies/BSim/ || die "cp BSim postgresql failed"
+
+	cp .gradle/"${Z3_NAME}"/bin/libz3*.so ./dependencies/SymbolicSummaryZ3/os/linux_x86_64/ || die "cp z3 libs failed"
+
+	cp "${DISTDIR}"/{protobuf-6.31.0-py3-none-any.whl,psutil-5.9.8.tar.gz,setuptools-80.9.0-py3-none-any.whl,wheel-0.45.1-py3-none-any.whl} \
+		./dependencies/Debugger-rmi-trace/ || die "cp Debugger-rmi-trace wheels failed"
+
+	cp "${DISTDIR}"/{pybag-2.2.16-py3-none-any.whl,comtypes-1.4.13-py3-none-any.whl,win32more-0.7.0-py3-none-any.whl,win32more_appsdk-0.7.3-py2.py3-none-any.whl,win32more_core-0.7.0-py2.py3-none-any.whl,win32more_microsoft_graphics_win2d-0.7.1.3.2-py2.py3-none-any.whl,win32more_microsoft_web_webview2-0.7.1.0.3650.58-py2.py3-none-any.whl,win32more_microsoft_windows_sdk_contracts-0.7.10.0.26100.6901-py2.py3-none-any.whl,win32more_microsoft_windows_sdk_win32metadata-0.7.68.0.4-py2.py3-none-any.whl,win32more_microsoft_windowsappsdk-0.7.1.8.251106002-py2.py3-none-any.whl} \
+		./dependencies/Debugger-agent-dbgeng/ || die "cp Debugger-agent-dbgeng wheels failed"
+
+	cp "${DISTDIR}"/{packaging-25.0-py3-none-any.whl,setuptools-80.9.0-py3-none-any.whl,wheel-0.45.1-py3-none-any.whl,jpype1-1.5.2.tar.gz,jpype1-1.5.2-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl,jpype1-1.5.2-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl,jpype1-1.5.2-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl,jpype1-1.5.2-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl,jpype1-1.5.2-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl} \
+		./dependencies/PyGhidra/ || die "cp PyGhidra wheels failed"
+
+	mkdir -p ./dependencies/org/apache/commons/commons-collections4/4.6.0 \
+		./dependencies/org/apache/commons/commons-parent/103 \
+		./dependencies/org/apache/apache/39 \
+		./dependencies/org/junit/junit-bom/5.14.3 || die "mkdir Maven dirs failed"
+	cp "${DISTDIR}"/commons-collections4-4.6.0.{jar,pom} ./dependencies/org/apache/commons/commons-collections4/4.6.0/ \
+		|| die "cp commons-collections4 failed"
+	cp "${DISTDIR}/commons-parent-103.pom" ./dependencies/org/apache/commons/commons-parent/103/ || die "cp commons-parent failed"
+	cp "${DISTDIR}/apache-39.pom" ./dependencies/org/apache/apache/39/ || die "cp apache parent failed"
+	cp "${DISTDIR}"/junit-bom-5.14.3.{module,pom} ./dependencies/org/junit/junit-bom/5.14.3/ || die "cp junit-bom failed"
 }
 
 src_prepare() {
@@ -184,8 +236,15 @@ src_install() {
 		[[ -f "${script}" ]] && fperms +x "${script#${ED}}"
 	done
 
+	# doins drops the executable bit; restore the modes the build produced
+	local exe
+	while IFS= read -r exe; do
+		fperms +x "/usr/share/ghidra/${exe}" || die "fperms ${exe} failed"
+	done < <(cd build/dist/ghidra_${PV}_DEV && find . -type f -perm -u+x -printf '%P\n')
+
 	dosym -r /usr/share/ghidra/ghidraRun /usr/bin/ghidra
 
 	doicon GhidraDocs/GhidraClass/Beginner/Images/GhidraLogo64.png
-	make_desktop_entry ${PN} "Ghidra" /usr/share/pixmaps/GhidraLogo64.png "Utility"
+	make_desktop_entry --eapi9 ${PN} -n "Ghidra" -i /usr/share/pixmaps/GhidraLogo64.png \
+		-c "Utility" -C "Software reverse engineering framework"
 }
